@@ -44,10 +44,15 @@ int main() {
                 if (isNumber(temp)) numbers.push_back(stoi(temp));
             }
 
-            // Now move the crates as assigned.
+            // Now pickup multiple crates(holdingCrates) and place them to the assigned stack.
+            vector<char> holdingCrates;
             for (int i = 0; i < numbers[0]; i++) {
-                stacksOfCrates[numbers[2] - 1].push_back(stacksOfCrates[numbers[1] - 1].back());
+                holdingCrates.push_back(stacksOfCrates[numbers[1] - 1].back());
                 stacksOfCrates[numbers[1] - 1].pop_back();
+            }
+            while (holdingCrates.size() > 0) {
+                stacksOfCrates[numbers[2] - 1].push_back(holdingCrates.back());
+                holdingCrates.pop_back();
             }
         }
     }
