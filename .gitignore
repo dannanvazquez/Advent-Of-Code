@@ -1,2 +1,8 @@
-.vscode
+# Visual Studio Code cache directory
+.vscode/
+
+# Visual Studio cache directory
+.vs/
+
+# Executable Programs
 *.exe
