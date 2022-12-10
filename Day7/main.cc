@@ -7,6 +7,12 @@
 
 using namespace std;
 
+#define TOTAL_SPACE 70000000
+
+int total_size = 0;  // Total sum of directories that are only under a set limit. This is set by the function SumOfDirectories;
+int max_size = 0;  // The limit that should be compared under when adding to the total sum of directories. This is set by user input.
+int size_needed = 0;  // The size needed to be deleted to be able to install the download. This is set after the user inputs download size.
+
 struct Directory {
     string name;
     int size = 0;
@@ -31,13 +37,18 @@ struct Directory {
     }
 };
 
-int total_size = 0;  // Total sum of directories that are only under a set limit. This is set by the function SumOfDirectories;
-int max_size = 0;  // The limit that should be compared under when adding to the total sum of directories. This is set by user input.
-
 void SumOfDirectories(Directory* root, int& size) {
     if (root->size < max_size) size += root->size;
     for (auto dir : root->directories) {
         SumOfDirectories(dir, size);
+    }
+}
+
+void DirectorySizeToDelete(Directory* root, int& smallest) {
+    if (root->size < size_needed) return;
+    if (root->size < smallest || smallest == 0) smallest = root->size;
+    for (auto dir : root->directories) {
+        DirectorySizeToDelete(dir, smallest);
     }
 }
 
@@ -88,4 +99,15 @@ int main() {
     SumOfDirectories(root, total_size);
 
     cout << "The total sum of directories with a size under " << max_size << ": " << total_size << endl;
+
+    cout << "Your filesystem has a total disk space of " << TOTAL_SPACE << " and currently takes up " << root->size << ".\n";
+    cout << "How much space is needed for your download?\n";
+    int download_size;
+    cin >> download_size;
+    size_needed = download_size - (TOTAL_SPACE - root->size);
+
+    int smallest = 0;
+    DirectorySizeToDelete(root, smallest);
+
+    cout << "The smallest directory that can be deleted for this download takes up: " << smallest << endl;
 }
