@@ -69,15 +69,23 @@ public:
         visitedPositions.push_back(make_pair(x, y));
     }
 
-    void SetChild(Knot* _child) { child = _child; }
+    void InsertTail(Knot* _child) {
+        if (child == NULL) child = _child;
+        else child->InsertTail(_child);
+    }
 
-    int UniqueVisits() { return visitedPositions.size(); }
+    int TailsUniqueVisits() { 
+        if (child == NULL) return visitedPositions.size();
+        else return child->TailsUniqueVisits();
+    }
 };
 
 int main() {
     Knot* head = new Knot;
-    Knot* tail = new Knot;
-    head->SetChild(tail);
+    for (int i = 0; i < 9; i++) {
+        Knot* temp = new Knot;
+        head->InsertTail(temp);
+    }
 
     string line;
     ifstream infile("input.txt");
@@ -95,5 +103,5 @@ int main() {
         }
     }
 
-    cout << "Amount of unique positions that the tail has visited: " << tail->UniqueVisits() << endl;
+    cout << "Amount of unique positions that the tail has visited: " << head->TailsUniqueVisits() << endl;
 }
