@@ -1,8 +1,12 @@
 # Visual Studio Code cache directory
 .vscode/
+bin/
+obj/
 
 # Visual Studio cache directory
 .vs/
 
 # Executable Programs
 *.exe
+
+*.csproj
