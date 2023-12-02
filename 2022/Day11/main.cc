@@ -2,11 +2,12 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include "../Include/BigInt.hpp"
 
 using namespace std;
 
 struct Monkey {
-    vector<int> items;  // List of items the monkey is currently holding.
+    vector<BigInt> items;  // List of items the monkey is currently holding.
     string operation;  // Formula to get the new worry level. Example: old * 19
     int test;  // Check if the new worry level is divisible.
     int ifTrue;  // If the above test is divisible, go to this monkey.
@@ -31,7 +32,7 @@ int main() {
         string word;
         while (iss >> word) {
             if (word.back() == ',') word.pop_back();
-            new_monkey->items.push_back(stoi(word));
+            new_monkey->items.push_back(stoll(word));
         }
 
         // Get the operation
@@ -65,44 +66,63 @@ int main() {
         rounds--;
 
         for (auto monkey : monkeys) {
+            //cout << "Monkey!\n";
             while (monkey->items.size() > 0) {
-                int item = monkey->items[0];
-                int firstNum;
+                BigInt item = monkey->items[0];
+                BigInt firstNum;
                 char op;
-                int secNum;
+                BigInt secNum;
 
                 istringstream iss(monkey->operation);
                 string word;
 
                 iss >> word;
                 if (word == "old") firstNum = item;
-                else firstNum = stoi(word);
+                else firstNum = stoll(word);
 
                 iss >> word;
                 op = word[0];
 
                 iss >> word;
                 if (word == "old") secNum = item;
-                else secNum = stoi(word);
+                else secNum = stoll(word);
 
                 if (op == '*') item = firstNum * secNum;
                 else if (op == '+') item = firstNum + secNum;
 
                 item /= 3;
 
-                if (item % monkey->test == 0) monkeys[monkey->ifTrue]->items.push_back(item);
-                else monkeys[monkey->ifFalse]->items.push_back(item);
+                if (item % monkey->test == 0) {
+                    //cout << "moving " << item << " to monkey " << monkey->ifTrue << endl;
+                    monkeys[monkey->ifTrue]->items.push_back(item);
+                }
+                else {
+                    //cout << "moving " << item << " to monkey " << monkey->ifFalse << endl;
+                    monkeys[monkey->ifFalse]->items.push_back(item);
+                }
 
                 monkey->items.erase(monkey->items.begin());
                 monkey->inspectedCount++;
             }
         }
+
+        
+        cout << "== After round " << 30 - rounds << " ==\n";
+        for (int i = 0; i < monkeys.size(); i++) {
+            cout << "Monkey " << i << " inspected items " << monkeys[i]->inspectedCount << " times.\n";
+            for (auto& item : monkeys[i]->items) {
+                cout << " - " << item << endl;
+            }
+        }
+        cout << endl;
+        
     }
 
-    int mostActive = 0;
-    int secondMostActive = 0;
+    BigInt mostActive = 0;
+    BigInt secondMostActive = 0;
 
     for (auto monkey : monkeys) {
+        cout << monkey->inspectedCount << endl;
         if (monkey->inspectedCount > mostActive) {
             secondMostActive = mostActive;
             mostActive = monkey->inspectedCount;
