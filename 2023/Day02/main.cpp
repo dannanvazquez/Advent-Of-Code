@@ -18,25 +18,30 @@ int main() {
         vector<string> words;
         while(getline(ss, tmp, ' ')) words.push_back(tmp);
 
-        bool IsPossibleConfiguration = true;
-
+        int minimumRed = 0, minimumGreen = 0, minimumBlue = 0;
+        
         for (size_t i = 2; i < words.size(); i += 2) {
             int cubeAmount = stoi(words[i]);
             string cubeColor = words[i+1];
             if (cubeColor[cubeColor.length()-1] == ',' || cubeColor[cubeColor.length()-1] == ';') cubeColor.pop_back();
 
-            if ((cubeAmount > 12 && cubeColor == "red") || (cubeAmount > 13 && cubeColor == "green") || (cubeAmount > 14 && cubeColor == "blue")) {
-                IsPossibleConfiguration = false;
-                break;
+            if (cubeColor == "red") {
+                if (cubeAmount > minimumRed) {
+                    minimumRed = cubeAmount;
+                }
+            } else if (cubeColor == "green") {
+                if (cubeAmount > minimumGreen) {
+                    minimumGreen = cubeAmount;
+                }
+            } else {
+                if (cubeAmount > minimumBlue) {
+                    minimumBlue = cubeAmount;
+                }
             }
-            
         }
         
-        if (IsPossibleConfiguration) {
-            string id = words[1];
-            id.pop_back();
-            totalSum += stoi(id);
-        }
+        int powerOfSet = minimumRed * minimumGreen * minimumBlue;
+        totalSum += powerOfSet;
     }
 
     cout << "Total sum: " << totalSum << endl;
