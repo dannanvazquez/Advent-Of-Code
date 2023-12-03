@@ -10,3 +10,5 @@ obj/
 *.exe
 
 *.csproj
+
+input.txt
