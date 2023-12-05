@@ -10,28 +10,31 @@
 
 #define MAPAMOUNT 7
 
+uint64_t GetLocationOfSeedNumber(uint64_t seedNumber, Map maps[]) {
+    Seed newSeed(seedNumber);
+    uint64_t nextSourceNumber = seedNumber;
+    for (size_t i = 0; i < MAPAMOUNT; i++) {
+        nextSourceNumber = maps[i].GetDestinationNumber(nextSourceNumber);
+        newSeed.SetCorrespondingNumber(i, nextSourceNumber);
+    }
+    return nextSourceNumber;
+}
+
 int main() {
-    std::vector<Seed*> seeds;
     Map *maps = new Map[MAPAMOUNT]; // Order is soil, fertilizer, water, light, temperature, humidity, and location.
 
     std::string line;
     std::ifstream infile("input.txt");
 
     // Get data about seeds first.
+    std::vector<uint64_t> seedData;
     if (getline(infile, line)) {
         std::string tmp; 
         std::stringstream ss(line);
-        std::vector<std::string> seperatedWords;
         while(getline(ss, tmp, ' ')) {
-            if (tmp.empty() || tmp == " ") continue;
-            seperatedWords.push_back(tmp);
-        }
+            if (tmp == "seeds:" || tmp.empty() || tmp == " ") continue;
 
-        if (seperatedWords.size() > 1) {
-            for (size_t i = 1; i < seperatedWords.size(); i++) {
-                Seed* newSeed = new Seed(stoll(seperatedWords[i]));
-                seeds.push_back(newSeed);
-            }
+            seedData.push_back(stoll(tmp));
         }
     }
 
@@ -47,24 +50,31 @@ int main() {
         maps[mapsIndex].AddRange(line);
     }
 
-    // Convert the seeds to their corresponding number for each map type.
-    for (auto seed : seeds) {
-        uint64_t nextSourceNumber = seed->GetSeedNumber();
-        for (size_t i = 0; i < MAPAMOUNT; i++) {
-            nextSourceNumber = maps[i].GetDestinationNumber(nextSourceNumber);
-            seed->SetCorrespondingNumber(i, nextSourceNumber);
+    // Find the lowest location number of all seeds.
+    uint64_t lowestLocationNumberFirstPart = LLONG_MAX;
+    uint64_t lowestLocationNumberSecondPart = LLONG_MAX;
+
+    uint64_t rangeStart = 0;
+    for (size_t i = 0; i < seedData.size(); i++) {
+        uint64_t currentNumber = seedData[i];
+        uint64_t currentlocationNumber = GetLocationOfSeedNumber(currentNumber, maps);
+        if (currentlocationNumber < lowestLocationNumberFirstPart) {
+            lowestLocationNumberFirstPart = currentlocationNumber;
         }
+
+        // First, check for an even number since we're looking for pairs and index starts at 0.
+        if (i % 2 == 0) { 
+            rangeStart = currentNumber;
+        } else {
+            for (int j = 0; j < currentNumber; j++) {
+                uint64_t currentlocationNumber = GetLocationOfSeedNumber(rangeStart + j, maps);
+                if (currentlocationNumber < lowestLocationNumberSecondPart) {
+                    lowestLocationNumberSecondPart = currentlocationNumber;
+                }
+            }
+        }   
     }
 
-    // Find the lowest location number.
-    uint64_t lowestLocationNumber = LLONG_MAX;
-    for (auto seed : seeds) {
-        uint64_t currentLocationNumber = seed->GetCorrespondingNumber(MAPAMOUNT - 1);
-
-        if (currentLocationNumber < lowestLocationNumber) {
-            lowestLocationNumber = currentLocationNumber;
-        }
-    }
-
-    std::cout << "Lowest location number: " << lowestLocationNumber << std::endl;
+    std::cout << "Lowest location number of first part: " << lowestLocationNumberFirstPart << std::endl;
+    std::cout << "Lowest location number of second part: " << lowestLocationNumberSecondPart << std::endl;
 }
