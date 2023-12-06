@@ -2,9 +2,9 @@
 
 class Race { 
     private:
-        int time;
-        int distance;
+        int64_t time;
+        int64_t distance;
     public:
-        Race(int, int);
+        Race(int64_t, int64_t);
         int GetRecordPossibilitiesCount();
 };
