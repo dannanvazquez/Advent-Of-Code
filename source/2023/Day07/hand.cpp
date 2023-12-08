@@ -6,6 +6,8 @@
 
 #include "hand.h"
 
+char cardTypes[] = {'J','2','3','4','5','6','7','8','9','T','Q','K','A'};
+
 bool sortbysec(const std::pair<char, int> &a, const std::pair<char, int> &b) {
     return a.second > b.second;
 }
@@ -24,6 +26,21 @@ Hand::Hand(std::string hand, int bidAmount) {
         sortedCharAmounts.push_back(it); 
     } 
     sort(sortedCharAmounts.begin(), sortedCharAmounts.end(), sortbysec);
+
+    // Replace joker cards for best possible hand.
+    if (sortedCharAmounts.size() > 1) {
+        for (int i = 0; i < sortedCharAmounts.size(); i++) {
+            if (sortedCharAmounts[i].first == 'J') {
+                if (i == 0) {
+                    sortedCharAmounts[1].second += sortedCharAmounts[i].second;
+                    sortedCharAmounts.erase(sortedCharAmounts.begin());
+                } else {
+                    sortedCharAmounts[0].second += sortedCharAmounts[i].second;
+                    sortedCharAmounts.erase(sortedCharAmounts.begin() + i);
+                }
+            }
+        }
+    }
 
     switch(sortedCharAmounts[0].second) {
         case 5:
@@ -68,7 +85,6 @@ void Hand::SetNextHand(Hand* nextHand) {
 }
 
 bool Hand::HasStrongerCards(Hand* handB) {
-    char cardTypes[] = {'2','3','4','5','6','7','8','9','T','J','Q','K','A'};
     std::string handAData = this->hand;
     std::string handBData = handB->hand;
 
