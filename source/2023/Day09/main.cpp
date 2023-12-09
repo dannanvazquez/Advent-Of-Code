@@ -10,7 +10,8 @@
 int main() {
     auto startTime = std::chrono::high_resolution_clock::now();
 
-    int sumOfExtrapolatedValues = 0;
+    int sumOfPostExtrapolatedValues = 0;
+    int sumOfPreExtrapolatedValues = 0;
 
     std::ifstream infile("input.txt");
     std::string line;
@@ -18,10 +19,12 @@ int main() {
         if (line.empty()) continue;
 
         Sequence newSequence(line);
-        sumOfExtrapolatedValues += newSequence.ExtrapolatedValue(newSequence.sequence);
+        sumOfPostExtrapolatedValues += newSequence.PostExtrapolatedValue(newSequence.sequence);
+        sumOfPreExtrapolatedValues += newSequence.PreExtrapolatedValue(newSequence.sequence);
     }
 
-    std::cout << "Sum of extrapolated values: " << sumOfExtrapolatedValues << std::endl;
+    std::cout << "Sum of post extrapolated values: " << sumOfPostExtrapolatedValues << std::endl;
+    std::cout << "Sum of pre extrapolated values: " << sumOfPreExtrapolatedValues << std::endl;
 
     std::cout << "Execution duration: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime).count() << " ms\n";
 }

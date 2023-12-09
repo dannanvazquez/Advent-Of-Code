@@ -7,5 +7,6 @@ struct Sequence {
         std::vector<int> sequence;
 
         Sequence(std::string);
-        int ExtrapolatedValue(std::vector<int>);
+        int PostExtrapolatedValue(std::vector<int>);
+        int PreExtrapolatedValue(std::vector<int>);
 };
