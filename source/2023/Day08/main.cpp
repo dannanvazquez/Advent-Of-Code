@@ -25,7 +25,11 @@ int main() {
         graph.AddNode(line);
     }
 
-    std::cout << "Steps to reach ZZZ: " << graph.DistanceBetweenNodes("AAA", "ZZZ") << std::endl;
+    int distanceBetweenNodes = graph.DistanceBetweenNodes("AAA", "ZZZ");
+    std::cout << "Steps to reach ZZZ: " << distanceBetweenNodes << std::endl;
+
+    uint64_t distanceTillAllNodesEndIn = graph.DistanceTillAllNodesEndAt('A', 'Z');
+    std::cout << "Steps for all nodes to end at Z: " << distanceTillAllNodesEndIn << std::endl;
 
     std::cout << "Execution duration: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime).count() << " ms\n";
 }

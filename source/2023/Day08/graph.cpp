@@ -1,8 +1,10 @@
 #include <string>
 #include <iostream>
+#include <numeric>
 
 #include "graph.h"
 #include "node.h"
+
 
 void Graph::AddNode(std::string nodeData) {
     std::string id;
@@ -46,7 +48,7 @@ Node* Graph::GetNodeByID(std::string id) {
 
 int Graph::DistanceBetweenNodes(std::string from, std::string to) {
     int stepsRequired = 0;
-    
+
     Node* temp = this->GetNodeByID(from);
     while (temp != NULL && temp->id != to) {
         if (this->directions[stepsRequired % directions.size()] == 'L') {
@@ -58,4 +60,45 @@ int Graph::DistanceBetweenNodes(std::string from, std::string to) {
     }
 
     return stepsRequired;
+}
+
+int Graph::DistanceBetweenNodesEndIn(Node* startingNode, char to) {
+    int stepsRequired = 0;
+
+    Node* temp = startingNode;
+    while (temp != NULL && temp->id[2] != to) {
+        if (this->directions[stepsRequired % directions.size()] == 'L') {
+            temp = temp->left;
+        } else {
+            temp = temp->right;
+        }
+        stepsRequired++;
+    }
+
+    return stepsRequired;
+}
+
+uint64_t Graph::DistanceTillAllNodesEndAt(char from, char to) {
+    std::vector<int> distances;
+
+    for (auto node : this->nodes) {
+        if (node->id[2] == from) {
+            distances.push_back(this->DistanceBetweenNodesEndIn(node, to));
+        }
+    }
+
+    uint64_t lcm = 0;
+    if (distances.size() == 1) {
+        lcm = distances[0];
+    } else {
+        lcm = std::lcm(distances[0], distances[1]);
+
+        if (distances.size() > 2) {
+            for (int i = 2; i < distances.size(); i++) {
+                lcm = std::lcm(lcm, distances[i]);
+            }
+        }
+    }
+
+    return lcm;
 }

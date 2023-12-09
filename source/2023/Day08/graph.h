@@ -14,4 +14,6 @@ class Graph {
         void SetDirections(std::string);
         Node* GetNodeByID(std::string);
         int DistanceBetweenNodes(std::string, std::string);
+        int DistanceBetweenNodesEndIn(Node*, char);
+        uint64_t DistanceTillAllNodesEndAt(char, char);
 };
