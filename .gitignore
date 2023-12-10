@@ -12,3 +12,4 @@ obj/
 *.csproj
 
 input.txt
+output.txt
