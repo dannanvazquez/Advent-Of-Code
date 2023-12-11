@@ -40,5 +40,7 @@ Node::Node(char pipe, int row, int col) {
             this->isFacingSouth = true;
             this->isFacingWest = true;
             break;
+        default:
+            return;
     }
 }

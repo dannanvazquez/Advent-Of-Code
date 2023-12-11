@@ -21,8 +21,11 @@ int main() {
         graph.InsertRow(line);
     }
 
-    int furthestStepAway = graph.FurthestStepAway();
-    std::cout << "Furthest step away: " << furthestStepAway << std::endl;
+    Node* furthestNodeAway = graph.FurthestNodeAway();
+    std::cout << "Furthest step away: " << furthestNodeAway->stepsAway << std::endl;
+    
+    int enclosedTilesAmount = graph.EnclosedTilesAmount();
+    std::cout << "Enclosed tiles amount: " << enclosedTilesAmount << std::endl;
 
     auto executionDuration = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime).count();
     std::cout << "Execution duration: " << executionDuration << " ms\n";
