@@ -5,44 +5,34 @@
 #include "graph.h"
 
 Graph::Graph(std::vector<std::string> inputData) {
-    // Expand the input vertically when there are no galaxies.
-    std::vector<std::string> verticalExpansion;
-    for (auto row : inputData) {
-        verticalExpansion.push_back(row);
-
-        if (row.find('#') == std::string::npos) {
-            verticalExpansion.push_back(row);
+    // Find what rows are empty.
+    for (int i = 0; i < inputData.size(); i++) {
+        if (inputData[i].find('#') == std::string::npos) {
+            this->emptyRows.push_back(i);
         }
     }
 
-    // Expand the input horizontally when there are no galaxies.
-    std::vector<std::string> horizontalExpansion(verticalExpansion.size(), "");
-    for (int i = 0; i < verticalExpansion[0].size(); i++) {
+    // Find what columns are empty.
+    for (int i = 0; i < inputData[0].size(); i++) {
         bool isExpandable = true;
-        for (int j = 0; j < verticalExpansion.size(); j++) {
-            if (verticalExpansion[j][i] == '#') {
+        for (int j = 0; j < inputData.size(); j++) {
+            if (inputData[j][i] == '#') {
                 isExpandable = false;
                 break;
             }
         }
 
-        for (int j = 0; j < verticalExpansion.size(); j++) {
-            horizontalExpansion[j] = horizontalExpansion[j] + verticalExpansion[j][i];
-        }
-
         if (isExpandable) {
-            for (int j = 0; j < verticalExpansion.size(); j++) {
-                horizontalExpansion[j] = horizontalExpansion[j] + '.';
-            }
+            this->emptyCols.push_back(i);
         }
     }
 
     // Convert the now expanded data into nodes.
-    for (int i = 0; i < horizontalExpansion.size(); i++) {
+    for (int i = 0; i < inputData.size(); i++) {
         std::vector<Node*> rowOfNodes;
-        for (int j = 0; j < horizontalExpansion[i].size(); j++) {
+        for (int j = 0; j < inputData[i].size(); j++) {
             Node* newNode = new Node(i, j);
-            if (horizontalExpansion[i][j] == '#') {
+            if (inputData[i][j] == '#') {
                 newNode->isGalaxy = true;
                 this->galaxies.push_back(newNode);
             }
@@ -52,12 +42,46 @@ Graph::Graph(std::vector<std::string> inputData) {
     }
 }
 
-int Graph::SumOfLengths() {
-    int sumOfLengths = 0;
+uint64_t Graph::SumOfLengths(int emptySpaceAmount) {
+    uint64_t sumOfLengths = 0;
     
     for (int i = 0; i < this->galaxies.size()-1; i++) {
+        int thisGalaxyRow = this->galaxies[i]->row;
+        int thisGalaxyCol = this->galaxies[i]->col;
         for (int j = 1; j < this->galaxies.size()-i; j++) {
-            sumOfLengths += abs(this->galaxies[i]->row - this->galaxies[i+j]->row) + abs(this->galaxies[i]->col - this->galaxies[i+j]->col);
+            int destinationGalaxyRow = this->galaxies[i+j]->row;
+            int destinationGalaxyCol = this->galaxies[i+j]->col;
+            sumOfLengths += abs(thisGalaxyRow - destinationGalaxyRow) + abs(thisGalaxyCol - destinationGalaxyCol);
+            
+            // Add empty space from rows
+            if (destinationGalaxyRow > thisGalaxyRow) {
+                for (int emptyRow : emptyRows) {
+                    if (emptyRow > thisGalaxyRow && emptyRow < destinationGalaxyRow) {
+                        sumOfLengths += emptySpaceAmount-1;
+                    }
+                }
+            } else if (destinationGalaxyRow < thisGalaxyRow) {
+                for (int emptyRow : emptyRows) {
+                    if (emptyRow < thisGalaxyRow && emptyRow > destinationGalaxyRow) {
+                        sumOfLengths += emptySpaceAmount-1;
+                    }
+                }
+            }
+
+            // Add empty space from cols
+            if (destinationGalaxyCol > thisGalaxyCol) {
+                for (int emptyCol : emptyCols) {
+                    if (emptyCol > thisGalaxyCol && emptyCol < destinationGalaxyCol) {
+                        sumOfLengths += emptySpaceAmount-1;
+                    }
+                }
+            } else if (destinationGalaxyCol < thisGalaxyCol) {
+                for (int emptyCol : emptyCols) {
+                    if (emptyCol < thisGalaxyCol && emptyCol > destinationGalaxyCol) {
+                        sumOfLengths += emptySpaceAmount-1;
+                    }
+                }
+            }
         }
     }
 

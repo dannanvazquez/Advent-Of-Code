@@ -26,8 +26,11 @@ int main() {
 
     Graph graph(InputData());
 
-    int sumOfLengths = graph.SumOfLengths();
-    std::cout << "Sum of lengths: " << sumOfLengths << std::endl;
+    uint64_t sumOfLengths1 = graph.SumOfLengths(2);
+    std::cout << "Sum of lengths with two empty spaces: " << sumOfLengths1 << std::endl;
+
+    uint64_t sumOfLengths2 = graph.SumOfLengths(1'000'000);
+    std::cout << "Sum of lengths with a million empty spaces: " << sumOfLengths2 << std::endl;
 
     auto executionDuration = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime).count();
     std::cout << "Execution duration: " << executionDuration << " ms\n";

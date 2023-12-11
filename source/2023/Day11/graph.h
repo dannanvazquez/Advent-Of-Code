@@ -9,8 +9,10 @@ class Graph {
     private:
         std::vector<std::vector<Node*>> nodes;
         std::vector<Node*> galaxies;
+        std::vector<int> emptyRows;
+        std::vector<int> emptyCols;
     public:
         Graph(std::vector<std::string>);
-        int SumOfLengths();
+        uint64_t SumOfLengths(int);
         void PrintGraph();
 };
