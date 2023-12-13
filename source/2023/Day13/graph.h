@@ -11,6 +11,6 @@ class Graph {
     public:
         Graph(std::vector<std::string>);
         void InsertNode(std::vector<std::string>);
-        int ReflectionSummary();
+        int ReflectionSummary(int);
         void PrintGraph();
 };

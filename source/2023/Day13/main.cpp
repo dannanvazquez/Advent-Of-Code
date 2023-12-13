@@ -24,8 +24,11 @@ int main() {
 
     Graph graph(InputData());
 
-    int reflectionSummary = graph.ReflectionSummary();
+    int reflectionSummary = graph.ReflectionSummary(0);
     std::cout << "Reflection summary: " << reflectionSummary << std::endl;
+
+    int reflectionSummary2 = graph.ReflectionSummary(1);
+    std::cout << "Reflection summary with fixed smudge: " << reflectionSummary2 << std::endl;
 
     auto executionDuration = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime).count();
     std::cout << "Execution duration: " << executionDuration << " ms\n";

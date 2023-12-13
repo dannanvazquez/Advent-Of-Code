@@ -7,5 +7,5 @@ struct Node {
     std::vector<std::string> data;
 
     Node(std::vector<std::string>);
-    int ReflectionScore();
+    int ReflectionScore(int);
 };

@@ -26,10 +26,10 @@ void Graph::InsertNode(std::vector<std::string> data) {
     this->nodes.push_back(newNode);
 }
 
-int Graph::ReflectionSummary() {
+int Graph::ReflectionSummary(int smudges) {
     int reflectionSummary = 0;
 
-    for (auto node : this->nodes) reflectionSummary += node->ReflectionScore();
+    for (auto node : this->nodes) reflectionSummary += node->ReflectionScore(smudges);
 
     return reflectionSummary;
 }
