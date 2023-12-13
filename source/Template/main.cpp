@@ -13,8 +13,6 @@ std::vector<std::string> InputData() {
     std::ifstream infile("input.txt");
     std::string line;
     while (getline(infile, line)) {
-        if (line.empty()) continue;
-
         inputData.push_back(line);
     }
 

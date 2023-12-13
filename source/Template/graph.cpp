@@ -5,6 +5,8 @@
 
 Graph::Graph(std::vector<std::string> inputData) {
     for (auto row : inputData) {
+        if (row.empty()) continue;
+        
         std::vector<Node*> rowOfNodes;
         for (auto c : row) {
             Node* newNode = new Node(c);
