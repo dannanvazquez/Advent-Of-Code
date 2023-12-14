@@ -9,5 +9,6 @@ class Graph {
     public:
         Graph(std::vector<std::string>);
         int NorthLoad();
+        int SpinCycle(int);
         void PrintGraph();
 };
