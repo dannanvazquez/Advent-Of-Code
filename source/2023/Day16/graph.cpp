@@ -121,6 +121,36 @@ int Graph::EnergizedNodes() {
     return ReceiveRay(this->nodes[0][0], Direction::East);
 }
 
+int Graph::MostEnergizedPath() {
+    int mostEnergizedPath = 0;
+
+    for (int i = 0; i < this->nodes.size(); i++) {
+        // Check for nodes on east side.
+        this->ResetNodes();
+        int eastSide = ReceiveRay(this->nodes[i][this->nodes[i].size()-1], Direction::West);
+        if (eastSide > mostEnergizedPath) mostEnergizedPath = eastSide;
+
+        // Check for nodes on east side.
+        this->ResetNodes();
+        int westSide = ReceiveRay(this->nodes[i][0], Direction::East);
+        if (westSide > mostEnergizedPath) mostEnergizedPath = westSide;
+    }
+
+    for (int i = 0; i < this->nodes[0].size(); i++) {
+        // Check for nodes on north side.
+        this->ResetNodes();
+        int northSide = ReceiveRay(this->nodes[0][i], Direction::South);
+        if (northSide > mostEnergizedPath) mostEnergizedPath = northSide;
+
+        // Check for nodes on south side.
+        this->ResetNodes();
+        int southSide = ReceiveRay(this->nodes[this->nodes.size()-1][i], Direction::North);
+        if (southSide > mostEnergizedPath) mostEnergizedPath = southSide;
+    }
+
+    return mostEnergizedPath;
+}
+
 void Graph::PrintGraph() {
     for (auto row : this->nodes) {
         for (auto node : row) {

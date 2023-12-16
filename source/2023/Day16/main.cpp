@@ -27,6 +27,9 @@ int main() {
     int partOneAnswer = graph.EnergizedNodes();
     std::cout << "Part one answer: " << partOneAnswer << std::endl;
 
+    int partTwoAnswer = graph.MostEnergizedPath();
+    std::cout << "Part two answer: " << partTwoAnswer << std::endl;
+
     auto executionDuration = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime).count();
     std::cout << "Execution duration: " << executionDuration << " ms\n";
 }

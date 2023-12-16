@@ -14,6 +14,7 @@ class Graph {
         int ReceiveRay(Node*, Direction);
         void ResetNodes();
         int EnergizedNodes();
+        int MostEnergizedPath();
         void PrintGraph();
         void PrintEnergizedNodes();
 };
