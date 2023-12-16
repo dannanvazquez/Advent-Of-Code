@@ -27,6 +27,9 @@ int main() {
     int totalHASHValue = graph.TotalHASHValue();
     std::cout << "Total HASH value: " << totalHASHValue << std::endl;
 
+    int focusingPower = graph.FocusingPower();
+    std::cout << "Focusing power: " << focusingPower << std::endl;
+
     auto executionDuration = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime).count();
     std::cout << "Execution duration: " << executionDuration << " ms\n";
 }
