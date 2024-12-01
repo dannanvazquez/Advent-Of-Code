@@ -40,14 +40,11 @@ int main() {
         secondRow.push_back(temp2);
     }
 
-    // Sort rows from smallest to largest.
-    sort(firstRow.begin(), firstRow.end());
-    sort(secondRow.begin(), secondRow.end());
-
-    // Get final results
+    // Get the final results.
     int result = 0;
     for (int i = 0; i < firstRow.size(); i++) {
-        result += abs(firstRow[i] - secondRow[i]);
+        int count = std::count(secondRow.begin(), secondRow.end(), firstRow[i]);
+        result += firstRow[i] * count;
     }
 
     cout << "Final results: " << result << endl; 
