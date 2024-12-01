@@ -3,11 +3,13 @@
 
 #include "graph.h"
 
-Graph::Graph(std::vector<std::string> inputData) {
+using namespace std;
+
+Graph::Graph(vector<string> inputData) {
     for (auto row : inputData) {
         if (row.empty()) continue;
         
-        std::vector<Node*> rowOfNodes;
+        vector<Node*> rowOfNodes;
         for (auto c : row) {
             Node* newNode = new Node(c);
             rowOfNodes.push_back(newNode);
@@ -19,8 +21,8 @@ Graph::Graph(std::vector<std::string> inputData) {
 void Graph::PrintGraph() {
     for (auto row : this->nodes) {
         for (auto node : row) {
-            std::cout << node->data;
+            cout << node->data;
         }
-        std::cout << std::endl;
+        cout << endl;
     }
 }

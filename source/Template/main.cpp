@@ -7,11 +7,11 @@
 #include "node.h"
 #include "graph.h"
 
-std::vector<std::string> InputData() {
-    std::vector<std::string> inputData;
+vector<string> InputData() {
+    vector<string> inputData;
 
-    std::ifstream infile("input.txt");
-    std::string line;
+    ifstream infile("input.txt");
+    string line;
     while (getline(infile, line)) {
         inputData.push_back(line);
     }
@@ -20,11 +20,11 @@ std::vector<std::string> InputData() {
 }
 
 int main() {
-    auto startTime = std::chrono::high_resolution_clock::now();
+    auto startTime = chrono::high_resolution_clock::now();
 
     Graph graph(InputData());
     graph.PrintGraph();
 
-    auto executionDuration = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime).count();
-    std::cout << "Execution duration: " << executionDuration << " ms\n";
+    auto executionDuration = chrono::duration_cast<chrono::milliseconds>(chrono::high_resolution_clock::now() - startTime).count();
+    cout << "Execution duration: " << executionDuration << " ms\n";
 }

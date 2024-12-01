@@ -3,12 +3,14 @@
 
 #include "node.h"
 
+using namespace std;
+
 #pragma once
 
 class Graph {
     private:
-        std::vector<std::vector<Node*>> nodes;
+        vector<vector<Node*>> nodes;
     public:
-        Graph(std::vector<std::string>);
+        Graph(vector<string>);
         void PrintGraph();
 };
